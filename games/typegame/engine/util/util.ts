@@ -31,3 +31,8 @@ export function delay(milliseconds) {
         setTimeout(resolve, milliseconds);
     });
 }
+export function isVowelRegEx(char) {
+    if (char.length == 1) {
+        return /[aeiou]/.test(char);
+    }
+}

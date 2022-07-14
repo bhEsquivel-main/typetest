@@ -27,6 +27,7 @@ export const inputManager: SingleEventEmitter = new SingleEventEmitter();
 export type Options = {
     canvas: HTMLCanvasElement,
     minWidth?: number,
+    minHeight?: number,
     width?: number,
     height?: number,
     backgroundColor?: number,
@@ -40,6 +41,7 @@ function createRenderer() {
     let opt = {
 
         minWidth: context.GAME_MIN_WIDTH,
+        minHeight: context.GAME_MIN_HEIGHT,
         width: context.GAME_WIDTH,
         height: context.GAME_HEIGHT,
         canvas: stageCanvas,

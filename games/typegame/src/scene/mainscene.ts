@@ -4,6 +4,8 @@ import { Image } from "../../engine/component/image";
 import { GameOverBase, MainSceneBase, PlayBase } from "../../engine/core/mainSceneBase";
 import { DEFAULT_KEYBOARD_COMMAND } from "../../engine/service/keyboardService";
 import { Letter } from "../component/letter";
+import { LetterGenerator } from "../letterGenerator";
+import { isVowelRegEx } from "../../engine/util/util";
 
 export class GameOver extends GameOverBase<MainScene> {
 
@@ -74,10 +76,12 @@ export class MainScene extends MainSceneBase implements Animatable {
         this.setState(new Play());
 
             //test create letters
-        let _a = new Letter(false, "a");
-        this.letters.push(_a);
-        this.addChild(_a);
-        _a.position.set(320, 480);
+
+        let randletter = LetterGenerator.GetRandomLetter();
+        let _randletter = new Letter(isVowelRegEx(randletter), randletter);
+        this.letters.push(_randletter);
+        this.addChild(_randletter);
+        _randletter.position.set(320, 480);
     }
 
     initBG() {

@@ -6,7 +6,8 @@ export class Context extends GameContext {
 
         this.GAME_WIDTH = 960;
         this.GAME_HEIGHT = 640;
-        this.GAME_MIN_WIDTH = 800;
+       // this.GAME_MIN_WIDTH = 960;
+       // this.GAME_MIN_HEIGHT = 640;
 
 
     }

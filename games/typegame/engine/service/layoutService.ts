@@ -1,6 +1,7 @@
 import { Service } from "./service";
 import { OrientationService } from "./orientationService";
 import * as director from "../core/director";
+import { Orientation } from "../util/types";
 
 export class LayoutService extends Service {
 
@@ -52,16 +53,33 @@ export class LayoutService extends Service {
     private layout() {
         let options = director.options;
         let minWidth = options.minWidth;
-        let orignalWidth = options.width;
-        let orignalHeight = options.height;
+        let minHeight = options.minHeight;
+        let originalWidth = options.width;
+        let originalHeight = options.height;
         let rotation = 0;
         let orientation = this.orientationService.getOrientation();
-        orignalWidth = options.height;
-        orignalHeight = options.width;
+        let ratio = 1;
+        originalWidth = options.height;
+        originalHeight = options.width;
 
-        let ratio = Math.min(window.innerWidth / (minWidth > 0 ? minWidth : orignalWidth), window.innerHeight / orignalHeight);
-        let width = Math.ceil(orignalWidth * ratio);
-        let height = Math.ceil(orignalHeight * ratio);
+        if ((orientation === Orientation.PORTRAIT ) ) {
+            originalWidth = options.height;
+            originalHeight = options.width;
+            minWidth = options.minHeight;
+            minHeight = options.minWidth;
+        }
+
+        if(minWidth > 0 &&  minHeight > 0) {
+            let ratioA = Math.min(window.innerWidth / minWidth, window.innerHeight / originalHeight);
+            let ratioB = Math.min(window.innerWidth / originalWidth, window.innerHeight / minHeight);
+            ratio = Math.max(ratioA, ratioB);
+        }
+        else {
+            ratio = Math.min(window.innerWidth / (minWidth > 0 ? minWidth : originalWidth), window.innerHeight / originalHeight);
+        }
+
+        let width = Math.ceil(originalWidth * ratio);
+        let height = Math.ceil(originalHeight * ratio);
 
         director.stage.scale.set(ratio);
         director.stage.rotation = rotation;
