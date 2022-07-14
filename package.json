@@ -1,0 +1,32 @@
+{
+    "name": "apollogames",
+    "version": "1.0.0",
+    "description": "apollo games made from typescript webpack",
+    "scripts": {
+      "build": "cross-env NODE_ENV=production GAME=typegame webpack ",
+      "serve": "cross-env GAME=typegame webpack-dev-server --open --hot ",
+      "test": "mocha tests"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/bhEsquivel-main/typetest.git"
+    },
+    "author": "bern <esquivelbh@gmail.com>",
+    "devDependencies": {
+      "clean-webpack-plugin": "3.0.0",
+      "copy-webpack-plugin": "5.1.1",
+      "cross-env": "7.0.2",
+      "mocha": "7.1.1",
+      "mocha-loader": "5.0.0",
+      "ts-loader": "6.2.2",
+      "typescript": "3.8.3",
+      "webpack": "4.42.1",
+      "webpack-cli": "3.3.11",
+      "webpack-dev-server": "3.10.3"
+    },
+    "dependencies": {
+      "@tweenjs/tween.js": "18.6.4",
+      "pixi.js": "5.2.1"
+    }
+  }
+  
