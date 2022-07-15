@@ -19,6 +19,7 @@ import { SpriteRenderer } from "../../engine/component/spriteRenderer";
 export class GameOver extends GameOverBase<MainScene> {
 
     resetGameBtn: Button;
+    scoreLabel: Label;
     gameOverLabel: Label;
     enter() {
         console.log("GAMEOVER ENTER STATE");
@@ -52,26 +53,34 @@ export class GameOver extends GameOverBase<MainScene> {
         startGameLabel.position.set(0,25);
 
 
+        let score = this.scene.collectedLetter + 
+        (this.scene.collectedGoldenLetter * (this.scene.context as Context).GOLD_LETTER_PRICE);
+
+
         let option2 =  {
             style: {
                 fontFamily: "Consolas",
-                fontSize: 20,
+                fontSize: 65,
                 fill: 0xffffff
             },
-            value: "",
+            value: score.toString(),
             bitmap: false,
             align: "center",
             case: "uppercase",
             comma: false,
         }
+
+        this.scoreLabel = new Label(option2);
+        this.scene.addChild(this.scoreLabel);
+        this.scoreLabel.position.set(director.appContext.GAME_WIDTH*0.5,director.appContext.GAME_HEIGHT*0.25);
+       
+        option2.style.fontSize = 20;
         this.gameOverLabel = new Label(option2);
         this.scene.addChild(this.gameOverLabel);
-        this.gameOverLabel.position.set(director.appContext.GAME_WIDTH*0.5,director.appContext.GAME_HEIGHT*0.35);
-        let score = this.scene.collectedLetter + 
-                    (this.scene.collectedGoldenLetter * (this.scene.context as Context).GOLD_LETTER_PRICE);
-        this.gameOverLabel.value = "Letters: " + this.scene.collectedLetter+ "(x1)\n" +
-                                   "Golden Letters: " + this.scene.collectedGoldenLetter+ "(x5)\n" +
-                                   "Total Score: "+ score + "\n\nPLAY AGAIN?";
+        this.gameOverLabel.position.set(director.appContext.GAME_WIDTH*0.5,director.appContext.GAME_HEIGHT*0.40);
+       
+        this.gameOverLabel.value = "(x1)Letters: " + this.scene.collectedLetter+ "\n" +
+                                   "(x5)Golden Letters: " + this.scene.collectedGoldenLetter+ ""
 
      
 
@@ -137,6 +146,7 @@ export class Play extends PlayBase<MainScene> {
         if(this.scene.isGameOver== true) return;
         this.scene.letters.forEach(letter => {
                if( letter.strvalue == keyletter) {
+                    this.letterDelayInMS *= this.delayDecreaseFactor;
                     this.animateEffect(letter).then(() => {
                         this.countLetter(letter);
                         letter.collect();
