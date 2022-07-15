@@ -1,15 +1,20 @@
 import { Image } from "../../engine/component/image";
 import { Label } from "../../engine/component/label";
 import * as director from "../../engine/core/director";
+import * as tween from "../../engine/util/tween";
+import { Animatable } from "../../engine/animation/animatable";
+import { rangeFloat, rangeInteger } from "../../engine/util/random";
 
 
-export class Letter extends Image {
+export class Letter extends Image implements Animatable{
     
     character: Label;
-    
-   isGold: boolean;
+    strvalue: string;
+    isGold: boolean;
+    fallSpeed: number;
+    active: boolean;
 
-    constructor(_isGold: boolean, strvalue: string ) {
+    constructor(_isGold: boolean, _strvalue: string ) {
         if(_isGold) {
             super(director.resourceManager.resolve("@atlas/spriteAtlas/gold_block.png"));
         } else {
@@ -17,14 +22,15 @@ export class Letter extends Image {
         }
         this.setPivot(0.5);
         this.isGold = _isGold;
+        this.strvalue = _strvalue;
 
         let option =  {
             style: {
                 fontFamily: "Consolas",
-                fontSize: 55,
+                fontSize: 45,
                 fill: 0xffffff
             },
-            value: strvalue.toUpperCase(),
+            value: _strvalue.toUpperCase(),
             bitmap: false,
             align: "center",
             case: "uppercase",
@@ -33,8 +39,42 @@ export class Letter extends Image {
         
         this.character = new Label(option);
         this.addChild(this.character);
-        this.character.position.set(0,15);
+        this.character.position.set(0,10);
+
+        this.fallSpeed = rangeFloat(0.8, 0.3);
+        director.updater.add(this);
+        this.active = true;
     }
+
+    collect() {
+        if (this.active == false) return;
+        this.fadeDestroy();
+    }
+
+    fadeDestroy() {
+        tween.fadeOut(this, 200, () => {
+            director.updater.remove(this);
+            this.destroy();
+        });
+    }
+
+    dispose() {
+        this.fadeDestroy();
+    }
+    
+    
+    
+    advanceTime(elapsedFrames: number): boolean {
+        if(this.active == false) return;
+        this.position.y += (this.fallSpeed * elapsedFrames * 10);
+        if(this.position.y >= director.appContext.GAME_HEIGHT) {
+            this.active = false;
+            this.dispose();
+        }        
+        return true;
+    }
+
+
 
 
     

@@ -19,7 +19,7 @@ export class LetterGenerator
         }
         return LetterGenerator.alphabetArr;
     }
-    static GetRandomLetter() 
+    static GetRandomLetterString() 
     {
         let randInx = rangeInteger(0, LetterGenerator.AlphabetArray.length);
         return LetterGenerator.alphabetArr[randInx];

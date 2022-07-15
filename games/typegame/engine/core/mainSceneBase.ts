@@ -10,6 +10,7 @@ import { AppContext } from "../context/appContext";
 
 export abstract class GameState <T extends MainSceneBase> extends State<T> {
     exit(){}
+    update(elapsedFrames){}
     enter(){}
     keyClickHandler(keycode: string){};
     keyReleaseHandler(keycode: string){};

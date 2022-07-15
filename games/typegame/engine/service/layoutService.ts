@@ -59,15 +59,12 @@ export class LayoutService extends Service {
         let rotation = 0;
         let orientation = this.orientationService.getOrientation();
         let ratio = 1;
-        originalWidth = options.height;
-        originalHeight = options.width;
-
-        if ((orientation === Orientation.PORTRAIT ) ) {
+      /*  if ((orientation === Orientation.LANDSCAPE ) ) {
             originalWidth = options.height;
             originalHeight = options.width;
             minWidth = options.minHeight;
             minHeight = options.minWidth;
-        }
+        }*/
 
         if(minWidth > 0 &&  minHeight > 0) {
             let ratioA = Math.min(window.innerWidth / minWidth, window.innerHeight / originalHeight);

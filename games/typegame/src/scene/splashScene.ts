@@ -54,7 +54,7 @@ export class SplashScene extends Scene implements Animatable {
         startGameButton.scale.set(0.6,0.6);
         startGameButton.setPivot(0.5);
         startGameButton.position.set(320,480);
-        director.inputManager.on("onClickStart",() => this.handleStartGame() );
+        director.inputManager.once("onClickStart",() => this.handleStartGame() );
 
         let startGameLabel = new Label(option);
         startGameButton.addChild(startGameLabel);
