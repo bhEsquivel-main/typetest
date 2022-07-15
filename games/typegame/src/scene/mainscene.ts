@@ -10,7 +10,11 @@ import { Point } from "pixi.js";
 import { rangeFloat } from "../../engine/util/random";
 import { Label } from "../../engine/component/label";
 import { Button } from "../../engine/component/button";
+import { Layer } from "../../engine/component/layer";
 import { Context } from "../model/context";
+import { AnimatedEmitter, SimpleEmitter } from "../../engine/animation/emitters";
+import * as constant from "../constant";
+import { SpriteRenderer } from "../../engine/component/spriteRenderer";
 
 export class GameOver extends GameOverBase<MainScene> {
 
@@ -133,14 +137,37 @@ export class Play extends PlayBase<MainScene> {
         if(this.scene.isGameOver== true) return;
         this.scene.letters.forEach(letter => {
                if( letter.strvalue == keyletter) {
-                    this.countLetter(letter);
-                    letter.collect();
+                    this.animateEffect(letter).then(() => {
+                        this.countLetter(letter);
+                        letter.collect();
+                    });
                }
         });
         this.scene.letters = this.scene.letters.filter((letter, index) => {
             return letter.strvalue != keyletter;
         });
 
+    }
+
+    animateEffect(letter): Promise<any> {
+        return new Promise(res => {
+            if(letter.isGold) {
+                let  ss = new SpriteRenderer(constant.spritesheet_textures(),constant.circleSS_option);
+                letter.addChild(ss);
+                ss.position.x -= 65;
+                ss.position.y -= 35;
+                ss.playOnce().then(() => {
+                    res(undefined);
+                    ss.destroy();
+                });
+            } else {
+                let ae = new AnimatedEmitter(letter, constant.effect_textures(), constant.effect_config, 0.0012 );
+                ae.showOnce(() => {
+                    res(undefined);
+                });
+            }
+    
+        });
     }
 
     countLetter(letter) {
@@ -171,6 +198,10 @@ export class MainScene extends MainSceneBase implements Animatable {
 
     timerLabel: Label;
 
+   // collectEffect: AnimatedEmitter;
+   // effectLayer: Layer;
+
+    spriteSheet: SpriteRenderer;
 
     constructor() {
         super();
@@ -195,6 +226,12 @@ export class MainScene extends MainSceneBase implements Animatable {
         this.initGame();
         this.registerKeyboardHandlers();
 
+
+       // this.effectLayer = new Layer();
+        //this.addChild(this.effectLayer);
+        //this.collectEffect = new AnimatedEmitter(this.effectLayer, constant.effect_textures(), constant.effect_config, 0.0012 );
+       
+  
     }
 
     initGame() {
@@ -213,7 +250,7 @@ export class MainScene extends MainSceneBase implements Animatable {
             style: {
                 fontFamily: "Consolas",
                 fontSize: 40,
-                fill: 0x019e4d
+                fill: 0x43e307
             },
             value: "0",
             bitmap: false,
@@ -224,7 +261,7 @@ export class MainScene extends MainSceneBase implements Animatable {
 
         this.timerLabel = new Label(option);
         this.addChild(this.timerLabel);
-        this.timerLabel.position.set(director.appContext.GAME_WIDTH* 0.5, 20);
+        this.timerLabel.position.set(director.appContext.GAME_WIDTH* 0.5, 30);
         this.resetTime();
 
     }

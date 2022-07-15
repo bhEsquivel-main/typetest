@@ -1,5 +1,5 @@
 {
-  "include": [ "./src/**/*", "types.d.ts", "games/typegame/engine/core", "games/typegame/engine/animation" ],
+  "include": [ "./src/**/*",  "types.d.ts", "games/typegame/engine/core", "games/typegame/engine/animation" ],
   "compilerOptions": {
     /* Basic Options */
     "target": "es5",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */

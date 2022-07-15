@@ -48,12 +48,12 @@ export class Letter extends Image implements Animatable{
 
     collect() {
         if (this.active == false) return;
+        director.updater.remove(this);
         this.fadeDestroy();
     }
 
     fadeDestroy() {
         tween.fadeOut(this, 200, () => {
-            director.updater.remove(this);
             this.destroy();
         });
     }

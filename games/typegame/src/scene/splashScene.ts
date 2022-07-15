@@ -21,6 +21,8 @@ export class SplashScene extends Scene implements Animatable {
     enter() {
         this.resourceArray = [
             { type: "atlas", id: "spriteAtlas", src: "('../../assets/sprites.json" },
+            { type: "atlas", id: "animAtlas", src: "('../../assets/animAtlas.json" },
+            { type: "atlas", id: "circleAtlas", src: "('../../assets/circleSS.json" },
             { type: "img", id: "logo", src: "('../../assets/logo.png" }
         ];
         super.enter();
