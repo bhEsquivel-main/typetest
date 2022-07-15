@@ -2,7 +2,7 @@
 
 "bg.png":
 {
-	"frame": {"x":1,"y":89,"w":640,"h":960},
+	"frame": {"x":0,"y":86,"w":640,"h":960},
 	"rotated": true,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":640,"h":960},
@@ -10,7 +10,7 @@
 },
 "blue_block.png":
 {
-	"frame": {"x":1,"y":1,"w":70,"h":65},
+	"frame": {"x":0,"y":0,"w":70,"h":65},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":65},
@@ -18,7 +18,7 @@
 },
 "button.png":
 {
-	"frame": {"x":145,"y":1,"w":150,"h":86},
+	"frame": {"x":140,"y":0,"w":150,"h":86},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":150,"h":86},
@@ -26,7 +26,7 @@
 },
 "gold_block.png":
 {
-	"frame": {"x":73,"y":1,"w":70,"h":65},
+	"frame": {"x":70,"y":0,"w":70,"h":65},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":70,"h":65},
@@ -37,8 +37,8 @@
 	"version": "1.0",
 	"image": "sprites.png",
 	"format": "RGBA8888",
-	"size": {"w":962,"h":730},
+	"size": {"w":960,"h":726},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:440cc1af6c4c40a1366f7cc4cdf59e3d:d12127d19fa7beb674486fdde88531ee:1eabdf11f75e3a4fe3147baf7b5be24b$"
+	"smartupdate": "$TexturePacker:SmartUpdate:75aade0c0d43f55a2b838a220abab440:d063a62302ff3b36bd6aa3185f932572:1eabdf11f75e3a4fe3147baf7b5be24b$"
 }
 }

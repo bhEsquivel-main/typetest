@@ -42,6 +42,7 @@ export class Letter extends Image implements Animatable{
         this.character.position.set(0,10);
 
         this.fallSpeed = rangeFloat(0.8, 0.3);
+        if (this.isGold) this.fallSpeed = rangeFloat(1.3, 0.7);
         director.updater.add(this);
         this.active = true;
     }

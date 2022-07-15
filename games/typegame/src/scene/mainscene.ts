@@ -28,10 +28,10 @@ export class GameOver extends GameOverBase<MainScene> {
         let option =  {
             style: {
                 fontFamily: "Consolas",
-                fontSize: 35,
+                fontSize: 22,
                 fill: 0xffffff
             },
-            value: "RESET",
+            value: "Play Again",
             bitmap: false,
             align: "center",
             case: "uppercase",
@@ -43,7 +43,7 @@ export class GameOver extends GameOverBase<MainScene> {
             command: "onClickReset",
         });
         this.scene.addChild(this.resetGameBtn);
-        this.resetGameBtn.scale.set(0.6,0.6);
+        this.resetGameBtn.scale.set(0.8,0.8);
         this.resetGameBtn.setPivot(0.5);
         this.resetGameBtn.position.set(director.appContext.GAME_WIDTH*0.5,director.appContext.GAME_HEIGHT*0.5);
         director.inputManager.once("onClickReset",() => this.handleResetgame() );
@@ -89,6 +89,7 @@ export class GameOver extends GameOverBase<MainScene> {
     handleResetgame() {
         this.resetGameBtn.destroy({children:true});
         this.gameOverLabel.destroy();
+        this.scoreLabel.destroy();
         this.scene.resetGame();
     }
 
