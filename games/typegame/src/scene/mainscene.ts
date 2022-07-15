@@ -10,9 +10,12 @@ import { Point } from "pixi.js";
 import { rangeFloat } from "../../engine/util/random";
 import { Label } from "../../engine/component/label";
 import { Button } from "../../engine/component/button";
+import { Context } from "../model/context";
 
 export class GameOver extends GameOverBase<MainScene> {
 
+    resetGameBtn: Button;
+    gameOverLabel: Label;
     enter() {
         console.log("GAMEOVER ENTER STATE");
         this.scene.timerLabel.visible = false;
@@ -30,23 +33,49 @@ export class GameOver extends GameOverBase<MainScene> {
             comma: false,
         }
 
-        let resetGameBtn = new Button({
+        this.resetGameBtn = new Button({
             up: director.resourceManager.resolve("@atlas/spriteAtlas/button.png"),
             command: "onClickReset",
         });
-        this.scene.addChild(resetGameBtn);
-        resetGameBtn.scale.set(0.6,0.6);
-        resetGameBtn.setPivot(0.5);
-        resetGameBtn.position.set(320,480);
+        this.scene.addChild(this.resetGameBtn);
+        this.resetGameBtn.scale.set(0.6,0.6);
+        this.resetGameBtn.setPivot(0.5);
+        this.resetGameBtn.position.set(director.appContext.GAME_WIDTH*0.5,director.appContext.GAME_HEIGHT*0.5);
         director.inputManager.once("onClickReset",() => this.handleResetgame() );
 
         let startGameLabel = new Label(option);
-        resetGameBtn.addChild(startGameLabel);
+        this.resetGameBtn.addChild(startGameLabel);
         startGameLabel.position.set(0,25);
+
+
+        let option2 =  {
+            style: {
+                fontFamily: "Consolas",
+                fontSize: 20,
+                fill: 0xffffff
+            },
+            value: "",
+            bitmap: false,
+            align: "center",
+            case: "uppercase",
+            comma: false,
+        }
+        this.gameOverLabel = new Label(option2);
+        this.scene.addChild(this.gameOverLabel);
+        this.gameOverLabel.position.set(director.appContext.GAME_WIDTH*0.5,director.appContext.GAME_HEIGHT*0.35);
+        let score = this.scene.collectedLetter + 
+                    (this.scene.collectedGoldenLetter * (this.scene.context as Context).GOLD_LETTER_PRICE);
+        this.gameOverLabel.value = "Letters: " + this.scene.collectedLetter+ "(x1)\n" +
+                                   "Golden Letters: " + this.scene.collectedGoldenLetter+ "(x5)\n" +
+                                   "Total Score: "+ score + "\n\nPLAY AGAIN?";
+
+     
 
     }
 
     handleResetgame() {
+        this.resetGameBtn.destroy({children:true});
+        this.gameOverLabel.destroy();
         this.scene.resetGame();
     }
 
@@ -66,6 +95,7 @@ export class Play extends PlayBase<MainScene> {
     enter() {
         console.log("PLAY ENTER STATE");
         this.scene.timerLabel.visible = true;
+        this.letterDelayInMS = (this.scene.context as Context).LETTER_SPAWN_DELAY;
     }
     exit() {
         console.log("PLAY EXIT STATE");
@@ -135,13 +165,12 @@ export class MainScene extends MainSceneBase implements Animatable {
 
     collectedLetter: number;
     collectedGoldenLetter: number;
-    goldenLetterPrice: number = 5;
-    MAX_TIME: number = 20;
     current_time: number;
     letters: Letter[];
     _init: boolean = false;;
 
     timerLabel: Label;
+
 
     constructor() {
         super();
@@ -173,7 +202,7 @@ export class MainScene extends MainSceneBase implements Animatable {
         this.setState(new Play());
         this._init = true;
         this.isGameOver = false;
-        this.current_time = this.MAX_TIME;
+        this.current_time = (this.context as Context).GAME_DURATION;
         this.collectedGoldenLetter = 0;
         this.collectedLetter = 0;
         director.updater.add(this);
@@ -212,7 +241,7 @@ export class MainScene extends MainSceneBase implements Animatable {
             element.dispose();
         });
 
-        delay(2000).then(() => {
+        delay(1000).then(() => {
             this.initGame();
         })
     }
@@ -240,11 +269,11 @@ export class MainScene extends MainSceneBase implements Animatable {
         return true;
     }
     resetTime(){
-        this.current_time = this.MAX_TIME;
+        this.current_time = (this.context as Context).GAME_DURATION;;
         this.setTime(this.current_time % 60);
     }
     setTime(_time) {
-        _time =  Math.min(Math.max(_time, 0), this.MAX_TIME);
+        _time =  Math.min(Math.max(_time, 0), (this.context as Context).GAME_DURATION);
         this.timerLabel.value = _time.toFixed(0);
     }
 
